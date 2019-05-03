@@ -12,7 +12,7 @@ Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 
 ### Setup Notes
 
-##### I added the following packages to expediate development:
+##### I added the following packages to expedite development:
 * axios - makes easy API calls<br>
 * react-ga - tracking user clicks with Google Analytics<br>
 * material-ui - reusuable web components that would reduce css and grid layout build time for all devices. Material-UI components also come with default props like `disabled` that can be easily modified with event handlers<br>
