@@ -1,6 +1,6 @@
 const styles =  {
     InfoPaper: {
-        padding: "15px",
+        padding: "62px",
         backgroundColor: "transaprent"
     },
     ActionPaper: {

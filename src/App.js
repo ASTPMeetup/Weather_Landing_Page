@@ -74,7 +74,7 @@ class App extends React.Component {
     return (
       <div className="App">
         <Grid container spacing={24}>
-          <Grid item sn={12} md={7} style={styles.InfoPaper}>
+          <Grid item sn={12} md={8} style={styles.InfoPaper}>
             {this.state.weatherDataSet ?
               <WeatherPanel
                 userCity={this.state.userCity} 
@@ -87,9 +87,9 @@ class App extends React.Component {
               />
             : ''} 
           </Grid>
-          <Grid item sm={12} md={5}>
+          <Grid item sm={12} md={4}>
             <Paper style={styles.ActionPaper} id="action_panel">
-              <Typography component="h2" variant="display2" style={styles.LightText} gutterBottom>
+              <Typography component="h2" variant="display3" style={styles.LightText} gutterBottom>
                 Instant weather data at your finger tips
               </Typography>
               <form noValidate autoComplete="off">
