@@ -1,15 +1,18 @@
 import React from 'react';
+import ReactGA from 'react-ga';
+import Axios from 'axios';
 import './App.css';
 import styles from './material_ui/Styles.js';
-import attachShakeToLink from './animation/shake.js';
-import { Paper, Grid, Typography, TextField, Button, FormControl, FormGroup, FormControlLabel, FormHelperText, CheckBox} from './material_ui/Components.js';
-import Axios from 'axios';
+import attachShakeEventToLink from './animation/shake.js';
+import { GAEvent } from "./tracking/Events";
+import WeatherPanel from './panels/WeatherPanel';
+import { Paper, Grid, Typography, TextField, Button, FormControl, FormGroup, FormControlLabel, CheckBox} from './material_ui/Components.js';
 
 class App extends React.Component {
   state = {
     zipcode: '',
+    weatherDataSet: false,
     termsAccepted: false,
-    error: false,
     userState: '',
     userCity: '',
     weatherImgLink: '',
@@ -22,20 +25,26 @@ class App extends React.Component {
   componentDidMount() {
     Axios.get('https://j9l4zglte4.execute-api.us-east-1.amazonaws.com/api/ctl/weather')
     .then(({ data })=> {
-      console.log(data.today);
-
-      this.setState({
-        userState: data.today.state,
-        userCity: data.today.city,
-        weatherImgLink: data.today.iconLink,
-        currentTemperature: data.today.temperature,
-        highTemperature: data.today.highTemperature,
-        lowTemperature: data.today.lowTemperature,
-        description: data.today.description
-      });
+      if(data && data.today) {
+        this.setState({
+          userState: data.today.state,
+          userCity: data.today.city,
+          weatherImgLink: data.today.iconLink,
+          currentTemperature: this.parseTemperature(data.today.temperature),
+          highTemperature: this.parseTemperature(data.today.highTemperature),
+          lowTemperature: this.parseTemperature(data.today.lowTemperature),
+          description: data.today.description,
+          weatherDataSet: true
+        });
+        attachShakeEventToLink();
+      }
+    })
+    .catch((error) => {
+      console.error(error);
     });
 
-    attachShakeToLink();
+    ReactGA.initialize('UA-139528681-1');
+    ReactGA.pageview('/homepage');
   }
 
   handleZipCodeChange = event => {
@@ -55,50 +64,30 @@ class App extends React.Component {
     return (Number(num)) ? parseInt(num) : '';
   };
 
+  disableSignUpButton = () => {
+    let termsAccepted = this.state.termsAccepted;
+    let zipcodeValue = this.state.zipcode;
+    return !termsAccepted || zipcodeValue.length !== 5;
+  }
+
   render() {
     return (
       <div className="App">
         <Grid container spacing={24}>
-          <Grid item md={7} style={styles.InfoPaper}>
-              <Typography component="h2" variant="display1" gutterBottom>
-                {this.state.userCity}, {this.state.userState}
-              </Typography>
-              <Grid container spacing={24}>
-                <Grid item md={12}>
-                  <img src={this.state.weatherImgLink} alt="weather icon"/>
-                  <Typography component="h2" variant="display4">
-                    {this.parseTemperature(this.state.currentTemperature)}&deg;
-                  </Typography>
-                </Grid>
-                <Grid item md={12}>
-                  <Typography variant="caption" gutterBottom>
-                    {this.state.description}
-                  </Typography>
-                </Grid>
-                <Grid item md={6}>
-                <Typography variant="caption" gutterBottom>
-                    Low
-                  </Typography>
-                  <Typography component="h2" variant="display3">
-                    {this.parseTemperature(this.state.lowTemperature)}&deg;
-                  </Typography>
-                </Grid>
-                <Grid item md={6}>
-                  <Typography variant="caption" gutterBottom>
-                    High
-                  </Typography>
-                  <Typography component="h2" variant="display3">
-                    {this.parseTemperature(this.state.highTemperature)}&deg;
-                  </Typography>
-                </Grid>
-                <Grid item md={12}>
-                  <Typography variant="subheading" style={styles.ActionLink} id="see_more">
-                    See more..
-                  </Typography>
-                </Grid>
-              </Grid>
+          <Grid item sn={12} md={7} style={styles.InfoPaper}>
+            {this.state.weatherDataSet ?
+              <WeatherPanel
+                userCity={this.state.userCity} 
+                userState={this.state.userState} 
+                weatherImgLink={this.state.weatherImgLink} 
+                currentTemperature={this.state.currentTemperature} 
+                description={this.state.description} 
+                lowTemperature={this.state.lowTemperature} 
+                highTemperature={this.state.highTemperature} 
+              />
+            : ''} 
           </Grid>
-          <Grid item md={5}>
+          <Grid item sm={12} md={5}>
             <Paper style={styles.ActionPaper} id="action_panel">
               <Typography component="h2" variant="display2" style={styles.LightText} gutterBottom>
                 Instant weather data at your finger tips
@@ -107,7 +96,7 @@ class App extends React.Component {
                 <TextField
                   id="zipcode"
                   label="Zipcode"
-                  type="search"
+                  type="number"
                   value={this.state.zipcode}
                   onChange={this.handleZipCodeChange}
                   margin="normal"
@@ -119,16 +108,21 @@ class App extends React.Component {
                   <a href="#">
                     <FormControlLabel
                       control={
-                        <CheckBox checked={this.state.termsAccepted} onChange={this.handleTermsAcceptanceChange} value="gilad" />
+                        <CheckBox checked={this.state.termsAccepted} onChange={this.handleTermsAcceptanceChange}/>
                       }
                       label="I accept terms and conditions"
                     />
                   </a>
                 </FormGroup>
-                {this.state.error ? <FormHelperText style={styles.LightText}>Please select terms and conditions</FormHelperText> : ''}
               </FormControl>
               <br/>
-              <Button variant="contained" color="primary">
+              <br/>
+              <Button 
+                variant="raised"
+                size="large" 
+                color="secondary"
+                disabled={this.disableSignUpButton()}
+                onClick={()=> GAEvent("Landing Page - sign up", "User clicked on sign up button", "LANDING_PAGE")}>
                   Sign Up
               </Button>
             </Paper>

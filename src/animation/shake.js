@@ -1,4 +1,4 @@
-const attachShakeToLink = () => {
+const attachShakeEventToLink = () => {
     const seeMoreLink = document.getElementById("see_more");
     const ActionPanel = document.getElementById("action_panel");
 
@@ -11,4 +11,4 @@ const attachShakeToLink = () => {
     });
 }
 
-export default attachShakeToLink;
+export default attachShakeEventToLink;
