@@ -1,3 +1,6 @@
+// JavaScript styles object for reusability 
+// + override existing UI library style arguments.
+
 const styles =  {
     InfoPaper: {
         padding: "62px",
@@ -10,10 +13,6 @@ const styles =  {
     },
     LightText: {
         color: "#f2f2f2"
-    },
-    ActionLink: {
-        color: "rgb(0, 164, 189)",
-        cursor: "pointer"
     }
 }
 

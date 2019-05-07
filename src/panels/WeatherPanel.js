@@ -1,6 +1,6 @@
 import React from 'react';
 import { GAEvent } from "../tracking/Events";
-import { Grid, Typography } from '../material_ui/Components.js';
+import { Grid, Typography, Button } from '../material_ui/Components.js';
 import styles from '../material_ui/Styles';
 
 const WeatherPanel = ({
@@ -15,7 +15,7 @@ const WeatherPanel = ({
         <div>
             <Grid container spacing={24}>
                 <Grid item xs={12}>
-                    <Typography component="h2" variant="display1" gutterBottom>
+                    <Typography component="h2" variant="display2" gutterBottom>
                         {userCity}, {userState}
                     </Typography>
                     <img src={weatherImgLink} alt="weather icon"/>
@@ -30,7 +30,7 @@ const WeatherPanel = ({
                     <Typography variant="caption" gutterBottom>
                     Low
                     </Typography>
-                    <Typography component="h2" variant="display3">
+                    <Typography component="h2" variant="display2">
                         {lowTemperature}&deg;
                     </Typography>
                 </Grid>
@@ -38,19 +38,20 @@ const WeatherPanel = ({
                     <Typography variant="caption" gutterBottom>
                     High
                     </Typography>
-                    <Typography component="h2" variant="display3">
+                    <Typography component="h2" variant="display2">
                         {highTemperature}&deg;
                     </Typography>
                 </Grid>
                 <Grid item xs={12}>
-                    <Typography 
-                    variant="subheading" 
-                    style={styles.ActionLink} 
+                    <Button 
+                    variant="outlined"
+                    size="large" 
+                    color="default"
                     id="see_more"
                     onClick={()=> GAEvent("Landing Page - see more", "User clicked on see more link", "LANDING_PAGE")}
                     >
                     See more..
-                    </Typography>
+                    </Button>
                 </Grid>
             </Grid>
         </div>
