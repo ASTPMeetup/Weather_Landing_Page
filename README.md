@@ -2,7 +2,7 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 
 ### View Live
 
-You can the app live at [https://weather-app-landing-page.netlify.com](https://weather-app-landing-page.netlify.com)
+You can view the app live at [https://weather-app-landing-page.netlify.com](https://weather-app-landing-page.netlify.com)
 
 ### Run locally
 
