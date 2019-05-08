@@ -15,7 +15,7 @@ const WeatherPanel = ({
         <div>
             <Grid container spacing={24}>
                 <Grid item xs={12}>
-                    <Typography component="h2" variant="display2" gutterBottom>
+                    <Typography component="h2" variant="display1" gutterBottom>
                         {userCity}, {userState}
                     </Typography>
                     <img src={weatherImgLink} alt="weather icon"/>

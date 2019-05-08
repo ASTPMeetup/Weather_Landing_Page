@@ -3,7 +3,7 @@
 
 const styles =  {
     InfoPaper: {
-        padding: "62px",
+        padding: "62px 32px 12px 32px",
         backgroundColor: "transaprent"
     },
     ActionPaper: {
@@ -13,7 +13,8 @@ const styles =  {
     },
     LightText: {
         color: "#f2f2f2"
-    }
+    },
+
 }
 
 export default styles;
